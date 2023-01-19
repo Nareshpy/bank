@@ -36,7 +36,6 @@ namespace bank
         {
             Console.WriteLine("Please enter the required currency as exactly shown in the options");
             Console.WriteLine("\t1.Argentine Peso Australian Dollar\t2.Bahraini Dinar\t3.Botswana Pula\n\t4.Brazilian Real\t5.British Pound\t6.Bruneian Dollar\n\t7.Bulgarian Lev\t8.Canadian Dollar\t9.Chilean Peso\n\t10.Chinese Yuan Renminbi\t11.Colombian Peso\t12.Czech Koruna\n\t13.Danish Krone\t14.Emirati Dirham\t15.Euro\n\t16.Hong Kong Dollar\t17.Hungarian Forint\t18.Icelandic Krona\n\t19.Indonesian Rupiah\t20.Iranian Rial\t21.Israeli Shekel\n\t22.Japanese Yen\t23.Kazakhstani Tenge\t24.Kuwaiti Dinar\n\t25.Libyan Dinar\t26.Malaysian Ringgit\t27.Mauritian Rupee\n\t28.Mexican Peso\t29.Nepalese Rupee\t30.New Zealand Dollar\n\t31.Norwegian Krone\t32.Omani Rial\t33.Pakistani Rupee\n\t34.Philippine Peso\t35.Polish Zloty\t36.Qatari Riyal\n\t37.Romanian New Leu\t38.Russian Ruble\t39.Saudi Arabian Riyal\n\t40.Singapore Dollar\t41.South African Rand\t42.South Korean Won\n\t43.Sri Lankan Rupee\t44.Swedish Krona\t45.Swiss Franc\n\t46.Taiwan New Dollar\t47.Thai Baht\t48.Trinidadian Dollar\n\t49.Turkish Lira\t50.US Dollar\t51Venezuelan Bolivar\t");
-           
             string selected_currency=Console.ReadLine();
             return all_currencies[selected_currency];
         }

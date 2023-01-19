@@ -10,7 +10,7 @@ namespace bank
 {
     internal class Program
     {
-       public static string id_Generator(string name)
+       public static string IdGenerator(string name)
         {
             DateTime date = DateTime.Today;
             string currentDate = date.ToString();
@@ -18,157 +18,21 @@ namespace bank
             tempId = name.Substring(0, 3) + currentDate.Substring(0, 10);
             return tempId;
         }
-       public static Dictionary<string, banks> all_banks = new Dictionary<string, banks>();
-       public static Dictionary<string, ArrayList> special_info = new Dictionary<string,ArrayList>();
-        public static Dictionary<string, string> special_transactions = new Dictionary<string, string>();
+       public static Dictionary<string, Banks> AllBanks = new Dictionary<string, Banks>();
+       public static Dictionary<string, ArrayList> SpecialInfo = new Dictionary<string,ArrayList>();
+       public static Dictionary<string, string> SpecialTransactions = new Dictionary<string, string>();
         static void Main(string[] args)
         {
 
             string bankName, bankId;
            
-            var allbanks_list = new List<string>();
-
-            void setup_bank()
-            {
-                Console.WriteLine("Please enter the bank name");
-                bankName = Console.ReadLine();
-                if (allbanks_list.Contains(bankName))
-                {
-                    Console.WriteLine($"{bankName} already exists");
-                }
-                else
-                {
-                    allbanks_list.Add(bankName);
-                    banks obj = new banks();
-                    string temp_bankId = id_Generator(bankName);
-                    obj.bankID = temp_bankId;
-                    all_banks[temp_bankId] = obj;
-                    Console.WriteLine("your bankID is\t:\t" + temp_bankId + "\n");
-                }
-            }
-            setup_bank();
-            
-            void revert_transaction()
-            {
-                Console.WriteLine("Please enter transaction id\n Please enter help if you can't remember transaction id");
-                string txn_id=Console.ReadLine();
-                if(txn_id== "help")
-                {
-                    foreach(string i in special_transactions.Keys)
-                    {
-                        Console.WriteLine(i);
-                    }
-                    Console.WriteLine("Please enter the transaction id from above mentioned");
-                    string new_txn_id = Console.ReadLine();
-                    Console.WriteLine("You have chosen to revert the following transaction");
-                    Console.WriteLine(special_transactions[new_txn_id]);
-                    string send_bankid = Convert.ToString(special_info[new_txn_id][0]);
-                    string re_bankid =  Convert.ToString(special_info[new_txn_id][1]);
-                    string send_acid = Convert.ToString(special_info[new_txn_id][2]);
-                    string re_acid = Convert.ToString(special_info[new_txn_id][3]);
-                    double amnt = Convert.ToDouble(special_info[new_txn_id][4]);
-                    double charges = Convert.ToDouble(special_info[new_txn_id][5]);
-                    banks.now_revert_transaction(send_bankid,re_bankid,send_acid,re_acid,amnt,charges);
-                }
-                else
-                {
-                    string new_txn_id = Console.ReadLine();
-                    Console.WriteLine("You have chosen to revert the following transaction");
-                    Console.WriteLine(special_transactions[new_txn_id]);
-                    string send_bankid = Convert.ToString(special_info[new_txn_id][0]);
-                    string re_bankid = Convert.ToString(special_info[new_txn_id][1]);
-                    string send_acid = Convert.ToString(special_info[new_txn_id][2]);
-                    string re_acid = Convert.ToString(special_info[new_txn_id][3]);
-                    double amnt = Convert.ToDouble(special_info[new_txn_id][4]);
-                    double charges = Convert.ToDouble(special_info[new_txn_id][5]);
-                    banks.now_revert_transaction(send_bankid, re_bankid, send_acid, re_acid, amnt, charges);
-                }
-
-            }
-            void showStaffMenu()
-            {
-                
-                Console.WriteLine("Please select the provided optons");
-                Console.WriteLine("\t\ta.create a new user account");
-                Console.WriteLine("\t\tb.delete a user account");
-                Console.WriteLine("\t\td.Add service charge for same bank account");
-                Console.WriteLine("\t\te.Add service cahrge for different bank account");
-                Console.WriteLine("\t\tf.view transaction history of a user");
-                Console.WriteLine("\t\tg.revert a transaction");
-                Console.WriteLine("\t\th.show all accounts");
-                char option = Convert.ToChar(Console.ReadLine());
-                var current_bank = all_banks[bankId];
-                if (option == 'a')
-                {
-                    current_bank.create_account();
-                }
-                else if (option == 'b')
-                {
-                    current_bank.delete_account();
-                }
-                else if (option == 'd')
-                {
-                    current_bank.ChangeCharges("samebank");
-                }
-                else if (option == 'e')
-                {
-                    current_bank.ChangeCharges("otherbank");
-                }
-                else if (option == 'f')
-                {
-                    current_bank.transaction_history();
-                }
-                else if (option == 'g')
-                {
-                    revert_transaction();
-                }
-                else if (option == 'h')
-                {
-                    current_bank.show_accounts();
-                }
-                else
-                {
-                    Console.WriteLine("Please enter valid option\n");
-                }   
-            }
-            void showUserMenu(string userid)
-            {
-                Console.WriteLine("Please select the provided optons");
-                Console.WriteLine("\t\ta.deposit amount");
-                Console.WriteLine("\t\tb.Withdraw amount");
-                Console.WriteLine("\t\tc.transfer amount to a account in same bank");
-                Console.WriteLine("\t\td.transfer amount to a account in other bank");
-                Console.WriteLine("\t\te.view transaction history");
-                char option = Convert.ToChar(Console.ReadLine());
-                var current_bank = all_banks[bankId];
-                if (option == 'a')
-                {
-                    current_bank.deposit_amount(bankId,userid);
-                }
-                else if (option == 'b')
-                {
-                    current_bank.Withdraw_amount(bankId,userid);
-                }
-                else if (option == 'c')
-                {
-                    current_bank.transfer_amount("samebank",userid,bankId);
-                }
-                else if (option == 'd')
-                {
-                    current_bank.transfer_amount("otherbank",userid,bankId);
-                }
-                else if (option == 'e')
-                {
-                    current_bank.transaction_history();
-                }
-
-            }
+            SetupBank();
             while (true)
             {
-               
+
                 Console.WriteLine("Please enter the bank id you wish to work on");
                 bankId = Console.ReadLine();
-                if (all_banks.ContainsKey(bankId))
+                if (AllBanks.ContainsKey(bankId))
                 {
                     Console.WriteLine($"\t\t\tWelcome to {bankId}");
                     Console.WriteLine("Please select wether you are a account holder or bank staff \n enter 1 if you are staff \n enter 2 if you are account holder");
@@ -177,18 +41,18 @@ namespace bank
                     int option = (int)Convert.ToInt64((Console.ReadLine()));
                     if (option == 1)
                     {
-                        showStaffMenu();
+                        ShowStaffMenu();
                     }
                     else
                     {
                         Console.WriteLine("Enter user-id");
                         string user_id = Console.ReadLine();
-                        var current_bank = all_banks[bankId];
-                        if (current_bank.account_credentials.ContainsKey(user_id))
+                        var current_bank = AllBanks[bankId];
+                        if (current_bank.AccountCredentials.ContainsKey(user_id))
                         {
                             Console.WriteLine("Enter password");
                             string password = Console.ReadLine();
-                            if (current_bank.account_credentials[user_id] == password)
+                            if (current_bank.AccountCredentials[user_id] == password)
                             {
                                 showUserMenu(user_id);
                             }
@@ -207,17 +71,153 @@ namespace bank
                 else
                 {
                     Console.WriteLine("Bank does not exist\n if you would like to setup a new bank please enter yes");
-                    string acknowledgement= Console.ReadLine();
+                    string acknowledgement = Console.ReadLine();
                     if (acknowledgement == "yes")
                     {
-                        setup_bank();
+                        SetupBank();
                     }
                     else
                     {
                         Console.WriteLine("Thank you\n");
                     }
-                }  
+                }
             }
+
+            void SetupBank()
+            {
+                Console.WriteLine("Please enter the bank name");
+                bankName = Console.ReadLine();
+                Banks obj = new Banks();
+                string temp_bankId = IdGenerator(bankName);
+                if (AllBanks.ContainsKey(temp_bankId))
+                { Console.WriteLine($"{bankName} already exists"); }
+                else
+                {
+                    obj.bankID = temp_bankId;
+                    AllBanks[temp_bankId] = obj;
+                    Console.WriteLine("your bankID is\t:\t" + temp_bankId + "\n");
+                }
+            }  
+            void RevertTransaction()
+            {
+                Console.WriteLine("Please enter transaction id\n Please enter help if you can't remember transaction id");
+                string txn_id=Console.ReadLine();
+                if(txn_id== "help")
+                {
+                    foreach(string i in SpecialTransactions.Keys)
+                    {
+                        Console.WriteLine(i);
+                    }
+                    Console.WriteLine("Please enter the transaction id from above mentioned");
+                    string new_txn_id = Console.ReadLine();
+                    Console.WriteLine("You have chosen to revert the following transaction");
+                    Console.WriteLine(SpecialTransactions[new_txn_id]);
+                    string send_bankid = Convert.ToString(SpecialInfo[new_txn_id][0]);
+                    string re_bankid =  Convert.ToString(SpecialInfo[new_txn_id][1]);
+                    string send_acid = Convert.ToString(SpecialInfo[new_txn_id][2]);
+                    string re_acid = Convert.ToString(SpecialInfo[new_txn_id][3]);
+                    double amnt = Convert.ToDouble(SpecialInfo[new_txn_id][4]);
+                    double charges = Convert.ToDouble(SpecialInfo[new_txn_id][5]);
+                    Banks.NowRevertTransaction(send_bankid,re_bankid,send_acid,re_acid,amnt,charges);
+                }
+                else
+                {
+                    string new_txn_id = Console.ReadLine();
+                    Console.WriteLine("You have chosen to revert the following transaction");
+                    Console.WriteLine(SpecialTransactions[new_txn_id]);
+                    string send_bankid = Convert.ToString(SpecialInfo[new_txn_id][0]);
+                    string re_bankid = Convert.ToString(SpecialInfo[new_txn_id][1]);
+                    string send_acid = Convert.ToString(SpecialInfo[new_txn_id][2]);
+                    string re_acid = Convert.ToString(SpecialInfo[new_txn_id][3]);
+                    double amnt = Convert.ToDouble(SpecialInfo[new_txn_id][4]);
+                    double charges = Convert.ToDouble(SpecialInfo[new_txn_id][5]);
+                    Banks.NowRevertTransaction(send_bankid, re_bankid, send_acid, re_acid, amnt, charges);
+                }
+
+            }
+            void ShowStaffMenu()
+            {
+                
+                Console.WriteLine("Please select the provided optons");
+                Console.WriteLine("\t\ta.create a new user account");
+                Console.WriteLine("\t\tb.delete a user account");
+                Console.WriteLine("\t\td.Add service charge for same bank account");
+                Console.WriteLine("\t\te.Add service cahrge for different bank account");
+                Console.WriteLine("\t\tf.view transaction history of a user");
+                Console.WriteLine("\t\tg.revert a transaction");
+                Console.WriteLine("\t\th.show all accounts");
+                char option = Convert.ToChar(Console.ReadLine());
+                var current_bank = AllBanks[bankId];
+                if (option == 'a')
+                {
+                    current_bank.CreateAccount();
+                }
+                else if (option == 'b')
+                {
+                    current_bank.DeleteAccount();
+                }
+                else if (option == 'd')
+                {
+                    current_bank.ChangeCharges("samebank");
+                }
+                else if (option == 'e')
+                {
+                    current_bank.ChangeCharges("otherbank");
+                }
+                else if (option == 'f')
+                {
+                    current_bank.TransactionHistory();
+                }
+                else if (option == 'g')
+                {
+                    RevertTransaction();
+                }
+                else if (option == 'h')
+                {
+                    current_bank.ShowAccounts();
+                }
+                else
+                {
+                    Console.WriteLine("Please enter valid option\n");
+                }   
+            }
+            void showUserMenu(string userid)
+            {
+                Console.WriteLine("Please select the provided optons");
+                Console.WriteLine("\t\ta.deposit amount");
+                Console.WriteLine("\t\tb.Withdraw amount");
+                Console.WriteLine("\t\tc.transfer amount to a account in same bank");
+                Console.WriteLine("\t\td.transfer amount to a account in other bank");
+                Console.WriteLine("\t\te.view transaction history");
+                char option = Convert.ToChar(Console.ReadLine());
+                var current_bank = AllBanks[bankId];
+                if (option == 'a')
+                {
+                    current_bank.DepositAmount(bankId,userid);
+                }
+                else if (option == 'b')
+                {
+                    current_bank.WithdrawAmount(bankId,userid);
+                }
+                else if (option == 'c')
+                {
+                    current_bank.TransferAmount("samebank",userid,bankId);
+                }
+                else if (option == 'd')
+                {
+                    current_bank.TransferAmount("otherbank",userid,bankId);
+                }
+                else if (option == 'e')
+                {
+                    current_bank.TransactionHistory();
+                }
+                else
+                {
+                    Console.WriteLine("Enter valid option");
+                }
+
+            }
+            
         }
     }
 }
