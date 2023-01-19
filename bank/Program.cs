@@ -128,7 +128,7 @@ namespace bank
                 }
                 else
                 {
-                    Console.WriteLine("Please enter valid option");
+                    Console.WriteLine("Please enter valid option\n");
                 }   
             }
             void showUserMenu(string userid)
